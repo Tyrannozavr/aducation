@@ -1,5 +1,5 @@
-from django.shortcuts import render, HttpResponseRedirect, HttpResponse
-from django.contrib.auth import login, authenticate
+from django.shortcuts import render, HttpResponseRedirect, HttpResponse, redirect
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.urls import reverse
@@ -7,7 +7,7 @@ from django.urls import reverse
 
 # Create your views here.
 def index(request):
-    return HttpResponse('hello, authentication')
+    return render(request, 'authentication/index.html')
 
 
 def register(request):
@@ -26,4 +26,17 @@ def register(request):
 
 
 def login_view(request):
+    if request.POST:
+        username = request.POST.get('name')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is None:
+            return render(request, 'authentication/login.html', {'message': 'Invalid username or password'})
+        else:
+            login(request, user)
+            return redirect(reverse('index'))
     return render(request, 'authentication/login.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect(reverse('index'))
