@@ -1,5 +1,3 @@
-// register.onclick = function(data) {console.log('asdfsdf'), console.log(data)}
-// document.forms['form'].submit()
 function register(data) {
     let form = document.forms['form']
     let name = document.getElementById('name').value
