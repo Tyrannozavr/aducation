@@ -5,14 +5,20 @@ from django.contrib.auth.models import User
 class Answers(models.Model):
     answer = models.CharField(max_length=255)
 
+    class Meta:
+        verbose_name_plural = 'Answers'
+
     def __str__(self):
         return self.answer
 
 
-class Tests(models.Model):
+class Questions(models.Model):
     question = models.CharField(max_length=255)
     variants = models.ManyToManyField(Answers, related_name='variants')
     correct = models.ManyToManyField(Answers, related_name='correct')
+
+    class Meta:
+        verbose_name_plural = 'Questions'
 
     def __str__(self):
         return self.question
@@ -20,7 +26,7 @@ class Tests(models.Model):
 
 class Testing(models.Model):
     name = models.CharField(max_length=255)
-    tests = models.ManyToManyField(Tests)
+    tests = models.ManyToManyField(Questions, related_name='testing')
 
     def __str__(self):
         return self.name
@@ -29,6 +35,9 @@ class Attempts(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     testing = models.ForeignKey(Testing, on_delete=models.CASCADE)
     answer = models.ManyToManyField(Answers)
+
+    class Meta:
+        verbose_name_plural = 'Attempts'
 
     def __str__(self):
         return self.user.username + ': ' + self.testing.name
