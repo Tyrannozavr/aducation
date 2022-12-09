@@ -11,4 +11,4 @@ class TestingListView(ListView):
     model = Testing
 
     def get_queryset(self):
-        return Testing.objects.select_related('').all()
+        return Testing.objects.prefetch_related('statistic').all()

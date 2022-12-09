@@ -18,11 +18,11 @@
     {% for test in object_list %}
     <li class="list-group-item">
         <span class="tag tag-default tag-pill pull-xs-right"> last result 14%</span>
-        {{ test.name }} <a href="{{ test.id }}">test</a>
+        {{ test.name }} <a href="{{ test.id }}">test</a> {{ test.statistic }}
     </li>
     {% endfor %}
 </ul>
-{#{{ object_list }}#}
+{{ object_list }}
 
 <!-- MDB -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"
