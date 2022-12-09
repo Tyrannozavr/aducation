@@ -8,8 +8,12 @@ class QuestionForm(forms.ModelForm):
         fields = '__all__'
 
     def clean(self):
-        if self.cleaned_data.get('question') == 'dmiv':
-            raise forms.ValidationError('name incorrect')
+        if self.cleaned_data.get('correct') == None:
+            raise forms.ValidationError('Question must have at least one right answer')
+
+        if list(self.cleaned_data.get('variants')) == list(self.cleaned_data.get('correct')):
+            raise forms.ValidationError('All answers cant\'t be right')
+
         return self.cleaned_data
 
 @admin.register(Answers)
