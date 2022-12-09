@@ -26,6 +26,10 @@ class QuestionsAdmin(admin.ModelAdmin):
     list_filter = ['testing']
     form = QuestionForm
 
+@admin.register(Statistic)
+class StatisticAdmin(admin.ModelAdmin):
+    list_filter = ['user']
+
 
 
 admin.site.register(Testing)

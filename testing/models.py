@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Answers(models.Model):
     answer = models.CharField(max_length=255)
@@ -41,3 +41,11 @@ class Attempts(models.Model):
 
     def __str__(self):
         return self.user.username + ': ' + self.testing.name
+
+class Statistic(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    testing = models.ForeignKey(Testing, on_delete=models.CASCADE)
+    result = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)])
+
+    def __str__(self):
+        return self.user.username + ': ' + self.testing.name + ' - ' + str(self.result) + '%'
