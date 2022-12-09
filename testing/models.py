@@ -44,7 +44,7 @@ class Attempts(models.Model):
 
 class Statistic(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    testing = models.ForeignKey(Testing, on_delete=models.CASCADE, related_name='statistic')
+    testing = models.ForeignKey(Testing, on_delete=models.CASCADE)
     result = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)])
 
     def __str__(self):
