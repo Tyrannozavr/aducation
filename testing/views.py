@@ -12,3 +12,9 @@ class TestingListView(ListView):
 
     def get_queryset(self):
         return Testing.objects.prefetch_related('statistic_set').all()
+
+class TestingDetailView(DetailView):
+    model = Testing
+
+def test(request, pk):
+    return render(request, 'testing/test.html')

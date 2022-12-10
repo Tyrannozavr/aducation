@@ -18,7 +18,7 @@
     {% for test in object_list %}
     <li class="list-group-item">
         <span class="tag tag-default tag-pill pull-xs-right"> last result {{ test.statistic_set.last.result }}% </span>
-        {{ test.name }} <a href="{{ test.id }}">test</a>
+         <a href="{{ test.id }}">{{ test.name }}</a>
     </li>
     {% endfor %}
 </ul>
