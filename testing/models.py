@@ -26,7 +26,7 @@ class Questions(models.Model):
 
 class Testing(models.Model):
     name = models.CharField(max_length=255)
-    tests = models.ManyToManyField(Questions, related_name='testing')
+    questions = models.ManyToManyField(Questions, related_name='questions')
 
     def __str__(self):
         return self.name
@@ -34,6 +34,7 @@ class Testing(models.Model):
 class Attempts(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     testing = models.ForeignKey(Testing, on_delete=models.CASCADE)
+    question = models.ForeignKey(Questions, on_delete=models.CASCADE)
     answer = models.ManyToManyField(Answers)
 
     class Meta:

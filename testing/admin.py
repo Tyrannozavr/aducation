@@ -23,7 +23,7 @@ class AnswersAdmin(admin.ModelAdmin):
 
 @admin.register(Questions)
 class QuestionsAdmin(admin.ModelAdmin):
-    list_filter = ['testing']
+    list_filter = ['questions']
     form = QuestionForm
 
 @admin.register(Statistic)

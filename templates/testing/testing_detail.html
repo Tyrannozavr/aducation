@@ -5,7 +5,7 @@
     <title>{{ testing.name }}</title>
 </head>
 <body>
-<a href="{{ testing.id }}/test">Start testing</a>
+<a href="{{ testing.id }}/passing">Start testing</a>
 {% if testing.statistic_set.all %}
     {% for statistic in testing.statistic_set.all %}
         <div>{{ statistic.result }} %</div>
