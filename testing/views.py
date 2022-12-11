@@ -20,7 +20,9 @@ class TestingDetailView(DetailView):
 def test(request, pk):
     context = {}
     testing = Testing.objects.prefetch_related('questions__variants').get(id=pk)
-    question = testing.questions.first()
+    question_id = Attempts.objects.filter(answer=None).first().question_id
+    # question = testing.questions.first()
+    question = testing.questions.get(id=question_id)
     variants = question.variants.all()
     context['question'] = question
     context['answers'] = variants
