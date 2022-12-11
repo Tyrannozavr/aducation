@@ -35,13 +35,13 @@ class Attempts(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     testing = models.ForeignKey(Testing, on_delete=models.CASCADE)
     question = models.ForeignKey(Questions, on_delete=models.CASCADE)
-    answer = models.ManyToManyField(Answers)
+    answer = models.ManyToManyField(Answers, null=True)
 
     class Meta:
         verbose_name_plural = 'Attempts'
 
     def __str__(self):
-        return self.user.username + ': ' + self.testing.name
+        return self.user.username + ': ' + self.testing.name + ' - ' + self.question.question
 
 class Statistic(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

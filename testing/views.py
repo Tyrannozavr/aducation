@@ -19,21 +19,21 @@ class TestingDetailView(DetailView):
 
 def test(request, pk):
     context = {}
-    # print(pk)
-    # print(request.user)
-    # attempt = Attempts()
     testing = Testing.objects.prefetch_related('questions__variants').get(id=pk)
-    # print(test, test.__dict__)
-    # print(test.questions.first().variants.all())
     question = testing.questions.first()
     variants = question.variants.all()
     context['question'] = question
     context['answers'] = variants
+    if len(Attempts.objects.filter(user_id=request.user.id, testing_id=pk)) == 0:
+        for question in testing.questions.all():
+            Attempts.objects.create(user_id=request.user.id, testing_id=pk, question_id=question.id)
     if request.POST:
         number_question = int(request.POST.get('number'))
-        print(number_question)
-        attempt = Attempts.objects.create(user_id=request.user.id, testing_id=pk, question_id=number_question)
+        # attempt = Attempts.objects.create(user_id=request.user.id, testing_id=pk, question_id=number_question)
+        # print(number_question)
+        attempt = Attempts.objects.get(user_id=request.user.id, testing_id=pk, question_id=number_question)
+        # print(Attempts.objects.filter(answer=None))
+
         answer = [variant.id for variant in variants if request.POST.get(str(variant.id))]
         attempt.answer.add(*answer)
-        # print(answer)
     return render(request, 'testing/passing.html', context=context)
