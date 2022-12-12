@@ -46,7 +46,13 @@ class Attempts(models.Model):
 class Statistic(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     testing = models.ForeignKey(Testing, on_delete=models.CASCADE)
-    result = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)])
+    correct = models.IntegerField()
+
+    def percent_correct(self):
+        return int(self.testing.questions.count() / self.correct * 100)
+
+    def count_question(self):
+        return int(self.testing.questions.all().count())
 
     def __str__(self):
-        return self.user.username + ': ' + self.testing.name + ' - ' + str(self.result) + '%'
+        return self.user.username + ': ' + self.testing.name + ' - ' + str(self.percent_correct()) + '%'

@@ -5,6 +5,15 @@
     <title>statistic</title>
 </head>
 <body>
-
+{{ statistic }}
+<div>
+    User: {{ statistic.user }} passing test {{ statistic.testing.name }}
+</div>
+<div>
+    With result:
+    <div>count correct answers - {{ statistic.correct }}</div>
+    <div>Total amount of questions - {{ statistic.count_question }}</div>
+    <div>Percentage correct answers - {{ statistic.percent_correct }} %</div>
+</div>
 </body>
 </html>
