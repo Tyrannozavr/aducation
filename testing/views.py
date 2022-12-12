@@ -56,14 +56,16 @@ def test(request, pk):
 
 def statistic(request, pk):
     try:
+        # 2 / 0
         statistic_obj = Statistic.objects.get(user=request.user, testing_id=pk)
         return render(request, 'testing/statistic.html', {'statistic': statistic_obj})
-        # print('hello', statistic)
+    # except:
     except Statistic.DoesNotExist:
         attempt = Attempts.objects.filter(user=request.user, testing_id=pk)
-        correct = [(a[0] == b[0]) for a, b in zip([i.answer.all() for i in attempt], [i.question.correct.all() for i in attempt])]
+        correct = [(list(a) == list(b)) for a, b in zip([i.answer.all() for i in attempt], [i.question.correct.all() for i in attempt])]
         # percent = (sum(correct) / len(correct)) * 100
         count = sum(correct)
+        # print(count)
         Statistic.objects.create(user=request.user, testing_id=pk, correct=count)
         statistic(request, pk)
 
