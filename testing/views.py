@@ -4,9 +4,6 @@ from django.views.generic import ListView, DetailView
 from .models import Testing, Attempts, Statistic
 
 
-# def index(request):
-#     return render(request, 'testing/testing_list.html')
-
 class TestingListView(ListView):
     model = Testing
 
@@ -19,11 +16,7 @@ class TestingDetailView(DetailView):
 
 
 def get_question(pk, user):
-    # if len(Attempts.objects.filter(user=user, testing_id=pk, answer=None)) == 0:
-    #     return redirect('./statistic')
-    # print('1111111')
     question = Attempts.objects.filter(answer=None).first().question
-    # print('222222')
     return question
 
 
@@ -35,6 +28,10 @@ def creating_attempt(user, testing):
 def test(request, pk):
     context = {}
     testing = Testing.objects.prefetch_related('questions__variants').get(id=pk)
+    print(len(Attempts.objects.filter(user_id=request.user.id, testing_id=pk, answer=None)) == 0)
+    print(len(Attempts.objects.filter(user_id=request.user.id, testing_id=pk)) == 0)
+    print(Attempts.objects.filter(user_id=request.user.id, testing_id=pk))
+    print(Attempts.objects.filter(user_id=request.user.id, testing_id=pk, answer=None))
     if len(Attempts.objects.filter(user_id=request.user.id, testing_id=pk)) == 0:
         creating_attempt(request.user, testing)
     elif len(Attempts.objects.filter(user_id=request.user.id, testing_id=pk, answer=None)) == 0:
@@ -55,17 +52,31 @@ def test(request, pk):
 
 
 def statistic(request, pk):
-    try:
-        # 2 / 0
-        statistic_obj = Statistic.objects.get(user=request.user, testing_id=pk)
-        return render(request, 'testing/statistic.html', {'statistic': statistic_obj})
-    # except:
-    except Statistic.DoesNotExist:
+    if Attempts.objects.filter(user=request.user, testing_id=pk):
         attempt = Attempts.objects.filter(user=request.user, testing_id=pk)
         correct = [(list(a) == list(b)) for a, b in zip([i.answer.all() for i in attempt], [i.question.correct.all() for i in attempt])]
-        # percent = (sum(correct) / len(correct)) * 100
         count = sum(correct)
-        # print(count)
-        Statistic.objects.create(user=request.user, testing_id=pk, correct=count)
-        statistic(request, pk)
+        wrong = len(attempt.all()) - count
+        statistic_obj = Statistic.objects.create(user=request.user, testing_id=pk, correct=count, wrong=wrong)
+        [i.delete() for i in attempt]
+        return render(request, 'testing/statistic.html', {'statistic': statistic_obj})
+    else:
+        statistic_obj = Statistic.objects.filter(user=request.user, testing_id=pk).last()
+        return render(request, 'testing/statistic.html', {'statistic': statistic_obj})
+
+
+
+
+
+    # try:
+    #     statistic_obj = Statistic.objects.get(user=request.user, testing_id=pk)
+    #     return render(request, 'testing/statistic.html', {'statistic': statistic_obj})
+    # except Statistic.DoesNotExist:
+    #     attempt = Attempts.objects.filter(user=request.user, testing_id=pk)
+    #     correct = [(list(a) == list(b)) for a, b in zip([i.answer.all() for i in attempt], [i.question.correct.all() for i in attempt])]
+    #     count = sum(correct)
+    #     wrong = len(attempt.all()) - count
+    #     statistic_obj = Statistic.objects.create(user=request.user, testing_id=pk, correct=count, wrong=wrong)
+    #     [i.delete() for i in attempt]
+    #     return render(request, 'testing/statistic.html', {'statistic': statistic_obj})
 

@@ -47,12 +47,11 @@ class Statistic(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     testing = models.ForeignKey(Testing, on_delete=models.CASCADE)
     correct = models.IntegerField()
+    wrong = models.IntegerField()
 
     def percent_correct(self):
-        return int(self.testing.questions.count() / self.correct * 100)
+        return int(self.correct / (self.correct + self.wrong) * 100)
 
-    def count_question(self):
-        return int(self.testing.questions.all().count())
 
     def __str__(self):
         return self.user.username + ': ' + self.testing.name + ' - ' + str(self.percent_correct()) + '%'

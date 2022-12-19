@@ -8,7 +8,7 @@
 <a href="{{ testing.id }}/passing">Start testing</a>
 {% if testing.statistic_set.all %}
     {% for statistic in testing.statistic_set.all %}
-        <div>{{ statistic.result }} %</div>
+        <div>{{ statistic }}</div>
 
     {% endfor %}
 {% else %}
