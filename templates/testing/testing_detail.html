@@ -1,6 +1,6 @@
 {% extends 'testing/base_generic.html' %}
 {% block content %}
-    <a href="{{ testing.id }}/passing">Start testing</a>
+    <a href="{{ testing.id }}/passing" class="btn btn-secondary btn-light active" role="button" aria-pressed="true">Start</a>
     {% if testing.statistic_set.all %}
         {% for statistic in testing.statistic_set.all %}
             <div>{{ statistic }}</div>
