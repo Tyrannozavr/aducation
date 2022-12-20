@@ -34,7 +34,7 @@ def login_view(request):
             return render(request, 'authentication/login.html', {'message': 'Invalid username or password'})
         else:
             login(request, user)
-            return redirect(reverse('index'))
+            return redirect(reverse('testing-list'))
     return render(request, 'authentication/login.html')
 
 def logout_view(request):
